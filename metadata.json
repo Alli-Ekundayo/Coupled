@@ -1,0 +1,6 @@
+{
+  "name": "Coupled",
+  "description": "Minimalist AI tool that automatically lays out circuit boards in minutes.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

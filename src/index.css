@@ -1,0 +1,180 @@
+@import "tailwindcss";
+
+:root {
+  --color-cream: #E8DEC9;
+  --color-black: #111111;
+  --color-green: #2F6B4F;
+  --color-bg: var(--color-black);
+  --color-fg: var(--color-cream);
+  --radius-button: 5px;
+  --font-sans: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+:root[data-theme='light'] {
+  --color-bg: var(--color-cream);
+  --color-fg: var(--color-black);
+}
+
+@layer base {
+  html {
+    background-color: var(--color-bg);
+    color: var(--color-fg);
+    font-family: var(--font-mono);
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--color-bg);
+    color: var(--color-fg);
+  }
+}
+
+.font-display {
+  font-family: var(--font-sans);
+}
+
+.font-mono-label {
+  font-family: var(--font-mono);
+}
+
+/* Tactile dark paper grain texture (Cream grain fibers on Black paper) */
+.bg-paper-texture {
+  background-color: var(--color-bg);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220' viewBox='0 0 220 220'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.88' numOctaves='4' seed='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.91 0 0 0 0 0.87 0 0 0 0 0.788 0 0 0 0.095 0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23grain)'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='280' viewBox='0 0 280 280'%3E%3Cfilter id='pulp'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.14 0.36' numOctaves='2' seed='9' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.91 0 0 0 0 0.87 0 0 0 0 0.788 0 0 0 0.045 0'/%3E%3C/filter%3E%3Crect width='280' height='280' filter='url(%23pulp)'/%3E%3C/svg%3E");
+  background-repeat: repeat, repeat;
+  background-size: 220px 220px, 280px 280px;
+}
+
+/* Light paper grain texture (Black grain fibers on Cream paper) */
+:root[data-theme='light'] .bg-paper-texture {
+  background-color: var(--color-bg);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220' viewBox='0 0 220 220'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.88' numOctaves='4' seed='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.067 0 0 0 0 0.067 0 0 0 0 0.067 0 0 0 0.14 0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23grain)'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='280' viewBox='0 0 280 280'%3E%3Cfilter id='pulp'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.14 0.36' numOctaves='2' seed='9' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.067 0 0 0 0 0.067 0 0 0 0 0.067 0 0 0 0.06 0'/%3E%3C/filter%3E%3Crect width='280' height='280' filter='url(%23pulp)'/%3E%3C/svg%3E");
+  background-repeat: repeat, repeat;
+  background-size: 220px 220px, 280px 280px;
+}
+
+/* Primary & Secondary Button Tokens — strictly 3-color palette, no shadows, 5px radius */
+.btn-primary {
+  background-color: var(--color-fg);
+  color: var(--color-bg);
+  border: 1.5px solid var(--color-fg);
+  border-radius: var(--radius-button);
+  font-family: var(--font-mono);
+  transition: background-color 180ms ease, border-color 180ms ease, color 180ms ease, transform 120ms ease;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-green);
+  border-color: var(--color-green);
+  color: var(--color-cream);
+}
+
+.btn-primary:focus-visible {
+  outline: 2px solid var(--color-fg);
+  outline-offset: 2px;
+}
+
+.btn-primary:active {
+  transform: translateY(1px);
+}
+
+.btn-secondary {
+  background-color: var(--color-bg);
+  color: var(--color-fg);
+  border: 1.5px solid var(--color-fg);
+  border-radius: var(--radius-button);
+  font-family: var(--font-mono);
+  transition: background-color 180ms ease, border-color 180ms ease, color 180ms ease, transform 120ms ease;
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-green);
+  border-color: var(--color-green);
+  color: var(--color-cream);
+}
+
+.btn-secondary:focus-visible {
+  outline: 2px solid var(--color-fg);
+  outline-offset: 2px;
+}
+
+.btn-secondary:active {
+  transform: translateY(1px);
+}
+
+.nav-link:focus-visible,
+.icon-btn:focus-visible {
+  outline: 2px solid var(--color-fg);
+  outline-offset: 2px;
+}
+
+/* PCB Load Animation: components glide from scattered positions into ordered layout */
+@keyframes pcb-component-glide {
+  0% {
+    transform: translate(var(--scatter-x, 0px), var(--scatter-y, 0px)) rotate(var(--scatter-rot, 0deg));
+  }
+  100% {
+    transform: translate(0px, 0px) rotate(0deg);
+  }
+}
+
+@keyframes pcb-trace-draw {
+  0% {
+    stroke-dashoffset: var(--trace-len, 300);
+    opacity: 0;
+  }
+  35% {
+    opacity: 0;
+  }
+  45% {
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+
+.pcb-component-animated {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: pcb-component-glide 1.5s ease-out both;
+}
+
+.pcb-trace-animated {
+  stroke-dasharray: var(--trace-len, 300);
+  stroke-dashoffset: 0;
+  animation: pcb-trace-draw 1.5s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .pcb-component-animated,
+  .pcb-trace-animated {
+    animation: none !important;
+    transform: none !important;
+    stroke-dashoffset: 0 !important;
+    opacity: 1 !important;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    transition: none !important;
+  }
+
+  .btn-primary:active,
+  .btn-secondary:active {
+    transform: none !important;
+  }
+}
