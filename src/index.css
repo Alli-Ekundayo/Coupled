@@ -1,19 +1,136 @@
 @import "tailwindcss";
 
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  z-index: 100;
+  padding: 0.75rem 1.25rem;
+  background: var(--color-fg);
+  color: var(--color-bg);
+  font-weight: 600;
+  text-decoration: none;
+}
+.skip-link:focus {
+  left: 0.5rem;
+  top: 0.5rem;
+}
+
+.visually-hidden {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
 :root {
+  color-scheme: dark light;
   --color-cream: #E8DEC9;
   --color-black: #111111;
   --color-green: #2F6B4F;
-  --color-bg: var(--color-black);
-  --color-fg: var(--color-cream);
+  --color-bg: light-dark(var(--color-cream), var(--color-black));
+  --color-fg: light-dark(var(--color-black), var(--color-cream));
   --radius-button: 5px;
   --font-sans: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Dark CAD Studio tokens (also available to dialogs rendered outside studio root) */
+  --bg-canvas: #111214;
+  --bg-panel: #1b1c20;
+  --bg-panel-alt: #22242a;
+  --bg-card: #262830;
+  --bg-input: #15161a;
+  --border: #2e313a;
+  --border-strong: #3f4350;
+  --text: #eceef2;
+  --text-muted: #989dab;
+  --text-dim: #6c7080;
+  --accent: #00e676;
+  --accent-dim: rgba(0, 230, 118, 0.14);
+  --accent-text: #062113;
+  --ai: #a78bfa;
+  --ai-grad: linear-gradient(135deg, #7c3aed, #2563eb);
+  --substrate-2d: #081b15;
+  --substrate-3d: #166534;
+  --edge-cuts: #e8c85a;
+  --copper-f: #ef4444;
+  --copper-b: #3b82f6;
+  --pad-gold: #e0b44b;
+  --via-silver: #d8dee9;
+  --silk: rgba(241, 245, 249, 0.78);
+  --courtyard: rgba(148, 163, 184, 0.32);
+  --ok: #00e676;
+  --warn: #f59e0b;
+  --err: #f43f5e;
 }
 
 :root[data-theme='light'] {
-  --color-bg: var(--color-cream);
-  --color-fg: var(--color-black);
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+}
+
+[data-studio='true'] {
+  color-scheme: dark;
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+  font-size: 12.5px;
+  line-height: 1.4;
+}
+
+[data-studio='true'] .font-mono,
+[data-studio='true'] code,
+[data-studio='true'] pre {
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+/* Dual-scale millimeter grid backdrop for 2D/3D/Schematic viewports */
+.cad-grid-bg {
+  background-color: var(--bg-canvas);
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
+}
+
+/* Active tab non-color underline indicator */
+.studio-tab {
+  position: relative;
+}
+
+.studio-tab[aria-selected='true']::after {
+  content: "";
+  position: absolute;
+  inset: auto 4px 0;
+  border-block-end: 2px solid var(--accent);
+}
+
+/* Post-interaction form validation (:user-invalid / :user-valid) */
+.auth-error-msg {
+  display: none;
+}
+
+.auth-validated-input:user-invalid {
+  border-color: var(--err);
+}
+
+.auth-validated-input:user-invalid + .auth-error-msg,
+.auth-validated-input:user-invalid ~ .auth-error-msg {
+  display: block;
+}
+
+.auth-validated-input:user-valid {
+  border-color: var(--ok);
+}
+
+/* Responsive table container query context */
+.cad-table-wrapper {
+  container-type: inline-size;
 }
 
 @layer base {
@@ -21,7 +138,6 @@
     background-color: var(--color-bg);
     color: var(--color-fg);
     font-family: var(--font-mono);
-    scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -59,6 +175,13 @@
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='280' viewBox='0 0 280 280'%3E%3Cfilter id='pulp'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.14 0.36' numOctaves='2' seed='9' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.067 0 0 0 0 0.067 0 0 0 0 0.067 0 0 0 0.06 0'/%3E%3C/filter%3E%3Crect width='280' height='280' filter='url(%23pulp)'/%3E%3C/svg%3E");
   background-repeat: repeat, repeat;
   background-size: 220px 220px, 280px 280px;
+}
+
+@media (forced-colors: active) {
+  .bg-paper-texture,
+  .cad-grid-bg {
+    background-image: none;
+  }
 }
 
 /* Primary & Secondary Button Tokens — strictly 3-color palette, no shadows, 5px radius */
@@ -113,6 +236,26 @@
 .nav-link:focus-visible,
 .icon-btn:focus-visible {
   outline: 2px solid var(--color-fg);
+  outline-offset: 2px;
+}
+
+/* Native <dialog> modal scroll containment & backdrop */
+dialog:modal {
+  overscroll-behavior: contain;
+}
+
+dialog::backdrop {
+  overflow: hidden;
+  overscroll-behavior: contain;
+  background: rgba(10, 11, 14, 0.72);
+  backdrop-filter: blur(2px);
+}
+
+/* Post-interaction form validation indicator */
+input:user-invalid:not(.auth-validated-input),
+textarea:user-invalid:not(.auth-validated-input) {
+  border-style: dashed;
+  outline: 1.5px dashed var(--color-fg);
   outline-offset: 2px;
 }
 
@@ -176,5 +319,11 @@
   .btn-primary:active,
   .btn-secondary:active {
     transform: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
   }
 }

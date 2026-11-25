@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { createLocalSampleProject, createLocalUploadedProject } from '../cad/sampleProject';
 import { Footer } from '../components/Footer';
 import { Navbar } from '../components/Navbar';
 import { StartDialog } from '../components/StartDialog';
+import { useStudioStore } from '../store/useStudioStore';
 import { PcbTheme } from '../three/pcbMaterials';
 import { BuildModeId } from '../utils/buildModes';
 import { PcbBoardPreset } from '../utils/pcbLayout';
@@ -42,6 +44,8 @@ export function AppLayout() {
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
+    const meta = document.querySelector('meta[name="color-scheme"]');
+    if (meta) meta.setAttribute('content', theme);
     try {
       window.localStorage.setItem('coupled-theme', theme);
     } catch {
@@ -49,18 +53,63 @@ export function AppLayout() {
     }
   }, [theme]);
 
+  useEffect(() => {
+    const onStorage = (e: StorageEvent) => {
+      if (e.key === 'coupled-theme' && (e.newValue === 'light' || e.newValue === 'dark')) {
+        setTheme(e.newValue);
+      }
+    };
+    window.addEventListener('storage', onStorage);
+    return () => window.removeEventListener('storage', onStorage);
+  }, []);
+
   const replayAnimation = useCallback(() => setAnimationKey((k) => k + 1), []);
-  const openStart = useCallback((mode: BuildModeId) => setOpenMode(mode), []);
+  const openStart = useCallback((_mode?: BuildModeId) => {
+    navigate('/auth?redirect=/studio');
+  }, [navigate]);
   const closeStart = useCallback(() => setOpenMode(null), []);
 
-  const handleStart = (request: StartRequest) => {
+  const handleStart = async (request: StartRequest) => {
     const project = createProject(request, projects.length + 1);
     setProjects((prev) => [project, ...prev]);
     setSelectedProjectId(project.id);
     setActivePresetId(request.presetId);
     replayAnimation();
-    if (pathname !== '/') {
-      navigate('/');
+
+    const studio = useStudioStore.getState();
+    studio.setMode('studio');
+
+    if (request.mode === 'scratch' && request.brief) {
+      studio.setLocalDemo(null);
+      studio.setPendingLandingPayload({ prompt: request.brief, boardFile: null });
+      studio.setCopilotTab('design');
+      studio.setCopilotOpen(true);
+    } else if (request.file) {
+      studio.setPendingLandingPayload({ boardFile: request.file, prompt: null });
+      studio.setLeftTab('pipeline');
+      studio.setActiveView('pcb');
+      studio.setCopilotOpen(false);
+      if (request.file.name.toLowerCase().endsWith('.kicad_pcb')) {
+        try {
+          const text = await request.file.text();
+          const snapshot = createLocalUploadedProject(request.file.name, text);
+          studio.setLocalDemo(snapshot);
+          studio.setActiveProjectId(snapshot.detail.project_id);
+        } catch {
+          // If client-side parse fails, PipelineTab still holds the File for backend upload
+        }
+      }
+    } else {
+      const sample = createLocalSampleProject();
+      studio.setPendingLandingPayload({ prompt: null, boardFile: null });
+      studio.setLocalDemo(sample);
+      studio.setActiveProjectId(sample.detail.project_id);
+      studio.setActiveView('pcb');
+      studio.setCopilotOpen(false);
+    }
+
+    if (pathname !== '/studio') {
+      navigate('/studio');
     }
   };
 
@@ -76,12 +125,13 @@ export function AppLayout() {
 
   return (
     <div id="top" className="bg-paper-texture min-h-screen text-[var(--color-fg)]">
+      <a href="#main-content" className="skip-link">Skip to main content</a>
       <Navbar
         theme={theme}
         onToggleTheme={() => setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'))}
         onStart={() => openStart('full')}
       />
-      <main>
+      <main id="main-content" tabIndex={-1}>
         <Outlet context={contextValue} />
       </main>
       <Footer onStart={() => openStart('full')} />

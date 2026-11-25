@@ -1,5 +1,5 @@
 import { Menu, Moon, Sun, X } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { PcbTheme } from '../three/pcbMaterials';
 import { BrandLogo } from './BrandLogo';
@@ -17,6 +17,17 @@ const SCROLL_LINKS: Array<{ label: string; to: string }> = [
 
 export function Navbar({ theme, onToggleTheme, onStart }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const mobileDialogRef = useRef<HTMLDialogElement>(null);
+
+  useEffect(() => {
+    const dialog = mobileDialogRef.current;
+    if (!dialog) return;
+    if (mobileMenuOpen) {
+      if (!dialog.open) dialog.showModal();
+    } else {
+      if (dialog.open) dialog.close();
+    }
+  }, [mobileMenuOpen]);
 
   const handleLinkClick = () => {
     setMobileMenuOpen(false);
@@ -57,6 +68,16 @@ export function Navbar({ theme, onToggleTheme, onStart }: NavbarProps) {
                 {item.label}
               </Link>
             ))}
+            <NavLink
+              to="/studio"
+              className={({ isActive }) =>
+                `nav-link shrink-0 whitespace-nowrap px-1 py-1 text-[13px] font-medium text-[var(--color-fg)] underline-offset-4 hover:underline ${
+                  isActive ? 'underline' : ''
+                }`
+              }
+            >
+              CAD Studio
+            </NavLink>
             <NavLink
               to="/auth"
               className={({ isActive }) =>
@@ -125,14 +146,19 @@ export function Navbar({ theme, onToggleTheme, onStart }: NavbarProps) {
         </div>
       </div>
 
-      {/* Mobile Menu Drawer */}
-      {mobileMenuOpen && (
-        <nav
-          id="mobile-nav-menu"
-          aria-label="Mobile navigation"
-          className="w-full border-t border-[var(--color-fg)] px-3 sm:px-5 md:hidden"
-        >
-          <div className="flex w-full flex-col gap-3 border-x border-[var(--color-fg)] px-5 py-5">
+      {/* Mobile Menu Drawer (native dialog) */}
+      <dialog
+        ref={mobileDialogRef}
+        id="mobile-nav-menu"
+        aria-label="Mobile navigation"
+        onClose={() => setMobileMenuOpen(false)}
+        onClick={(e) => {
+          if (e.target === e.currentTarget) setMobileMenuOpen(false);
+        }}
+        className="fixed inset-0 z-50 m-0 h-full w-full border-none bg-transparent p-0 backdrop:bg-transparent md:hidden open:flex open:flex-col"
+      >
+        <div className="mt-[73px] w-full border-t border-[var(--color-fg)] bg-[var(--color-bg)] px-3 sm:px-5">
+          <nav className="flex w-full flex-col gap-3 border-x border-[var(--color-fg)] px-5 py-5">
             {SCROLL_LINKS.map((item) => (
               <Link
                 key={item.to}
@@ -143,6 +169,17 @@ export function Navbar({ theme, onToggleTheme, onStart }: NavbarProps) {
                 <span>{item.label}</span>
               </Link>
             ))}
+            <NavLink
+              to="/studio"
+              onClick={handleLinkClick}
+              className={({ isActive }) =>
+                `nav-link flex min-h-[44px] w-full items-center justify-between border-b border-[var(--color-fg)] py-2 text-left text-sm font-medium text-[var(--color-fg)] ${
+                  isActive ? 'underline underline-offset-4' : ''
+                }`
+              }
+            >
+              <span>CAD Studio</span>
+            </NavLink>
             <NavLink
               to="/auth"
               onClick={handleLinkClick}
@@ -161,9 +198,9 @@ export function Navbar({ theme, onToggleTheme, onStart }: NavbarProps) {
             >
               Start building
             </button>
-          </div>
-        </nav>
-      )}
+          </nav>
+        </div>
+      </dialog>
     </header>
   );
 }

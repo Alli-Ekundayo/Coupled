@@ -5,6 +5,7 @@ export interface StartRequest {
   mode: BuildModeId;
   presetId: PcbBoardPreset['id'];
   fileName?: string;
+  file?: File;
   brief?: string;
 }
 

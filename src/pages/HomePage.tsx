@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { HowItWorksSection } from '../components/HowItWorksSection';
 import { PcbScrollStage } from '../components/PcbScrollStage';
 import { useAppContext } from '../layout/appContext';
@@ -25,7 +26,7 @@ export function HomePage() {
 
             <h1
               id="hero-heading"
-              className="font-display mt-5 max-w-[15ch] text-[clamp(2.65rem,5.2vw,4.75rem)] font-bold leading-[0.99] tracking-[-0.032em] text-[var(--color-fg)] [text-wrap:balance] md:mt-6"
+              className="font-display mt-5 max-w-[15ch] text-[clamp(2.65rem,1.5rem+3.7vw,4.75rem)] font-bold leading-[0.99] tracking-[-0.032em] text-[var(--color-fg)] [text-wrap:balance] md:mt-6"
             >
               From idea to routed board.
             </h1>
@@ -35,16 +36,15 @@ export function HomePage() {
             </p>
 
             <div className="mt-8 flex w-full flex-col gap-3.5 sm:w-auto sm:flex-row sm:items-center sm:gap-4 md:mt-9">
-              <button
-                type="button"
-                onClick={() => openStart('full')}
-                className="btn-primary w-full shrink-0 whitespace-nowrap px-6 py-3.5 text-center text-[13px] font-medium sm:w-auto"
+              <Link
+                to="/auth?redirect=/studio"
+                className="btn-primary inline-flex min-h-[44px] w-full shrink-0 items-center justify-center whitespace-nowrap px-6 py-3.5 text-center text-[13px] font-medium sm:w-auto"
               >
                 Start building
-              </button>
+              </Link>
               <a
                 href="#how-it-works"
-                className="btn-secondary inline-flex w-full shrink-0 items-center justify-center whitespace-nowrap px-6 py-3.5 text-center text-[13px] font-medium sm:w-auto"
+                className="btn-secondary inline-flex min-h-[44px] w-full shrink-0 items-center justify-center whitespace-nowrap px-6 py-3.5 text-center text-[13px] font-medium sm:w-auto"
               >
                 See how it works
               </a>

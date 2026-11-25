@@ -45,7 +45,7 @@ export function HowItWorksSection({
             </p>
             <h2
               id="how-it-works-heading"
-              className="font-display mt-4 max-w-[20ch] text-[clamp(1.75rem,3vw,2.75rem)] font-bold leading-[1.1] tracking-[-0.02em] text-[var(--color-fg)] [text-wrap:balance]"
+              className="font-display mt-4 max-w-[20ch] text-[clamp(1.75rem,1rem+2vw,2.75rem)] font-bold leading-[1.1] tracking-[-0.02em] text-[var(--color-fg)] [text-wrap:balance]"
             >
               From idea to routed board in three steps.
             </h2>
@@ -55,17 +55,18 @@ export function HowItWorksSection({
             <button
               type="button"
               onClick={() => {
-                document.getElementById('top')?.scrollIntoView({ behavior: 'smooth' });
+                const motionOk = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                document.getElementById('top')?.scrollIntoView({ behavior: motionOk ? 'smooth' : 'instant' });
                 onReplayAnimation();
               }}
-              className="btn-secondary shrink-0 whitespace-nowrap px-5 py-2.5 text-[13px] font-medium"
+              className="btn-secondary min-h-[44px] shrink-0 whitespace-nowrap px-5 py-2.5 text-[13px] font-medium"
             >
               Replay placement
             </button>
             <button
               type="button"
               onClick={onStart}
-              className="btn-primary shrink-0 whitespace-nowrap px-5 py-2.5 text-[13px] font-medium"
+              className="btn-primary min-h-[44px] shrink-0 whitespace-nowrap px-5 py-2.5 text-[13px] font-medium"
             >
               Start building
             </button>

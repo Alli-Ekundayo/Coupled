@@ -25,9 +25,9 @@ export function Footer({ onStart }: FooterProps) {
 
           <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 md:col-span-7">
             <div>
-              <p className="font-mono-label text-xs font-medium uppercase tracking-[0.14em] text-[var(--color-fg)]">
+              <h2 className="font-mono-label text-xs font-medium uppercase tracking-[0.14em] text-[var(--color-fg)]">
                 Product
-              </p>
+              </h2>
               <ul className="mt-4 flex flex-col gap-2.5 text-[13px]">
                 <li>
                   <Link
@@ -45,13 +45,21 @@ export function Footer({ onStart }: FooterProps) {
                     How it works
                   </Link>
                 </li>
+                <li>
+                  <Link
+                    to="/studio"
+                    className="nav-link underline-offset-4 hover:underline"
+                  >
+                    CAD Studio
+                  </Link>
+                </li>
               </ul>
             </div>
 
             <div>
-              <p className="font-mono-label text-xs font-medium uppercase tracking-[0.14em] text-[var(--color-fg)]">
+              <h2 className="font-mono-label text-xs font-medium uppercase tracking-[0.14em] text-[var(--color-fg)]">
                 Account
-              </p>
+              </h2>
               <ul className="mt-4 flex flex-col gap-2.5 text-[13px]">
                 <li>
                   <button
@@ -74,9 +82,9 @@ export function Footer({ onStart }: FooterProps) {
             </div>
 
             <div>
-              <p className="font-mono-label text-xs font-medium uppercase tracking-[0.14em] text-[var(--color-fg)]">
+              <h2 className="font-mono-label text-xs font-medium uppercase tracking-[0.14em] text-[var(--color-fg)]">
                 Formats
-              </p>
+              </h2>
               <ul className="mt-4 flex flex-col gap-2.5 text-[13px]">
                 <li>KiCad (.kicad_pcb)</li>
                 <li>KiCad (.kicad_sch)</li>

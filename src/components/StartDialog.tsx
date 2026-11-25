@@ -32,6 +32,7 @@ export function StartDialog({
   const [modeId, setModeId] = useState<BuildModeId>('full');
   const [selectedPreset, setSelectedPreset] = useState(activePresetId);
   const [fileName, setFileName] = useState('');
+  const [boardFile, setBoardFile] = useState<File | null>(null);
   const [brief, setBrief] = useState('');
   const [error, setError] = useState<string | null>(null);
 
@@ -44,12 +45,17 @@ export function StartDialog({
     if (openMode) {
       setModeId(openMode);
       setFileName('');
+      setBoardFile(null);
       setError(null);
       if (!dialog.open) dialog.showModal();
     } else if (dialog.open) {
       dialog.close();
     }
   }, [openMode]);
+
+  useEffect(() => {
+    dialogRef.current?.setAttribute('closedby', 'any');
+  }, []);
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
@@ -63,6 +69,7 @@ export function StartDialog({
       mode: modeId,
       presetId: selectedPreset,
       fileName: mode.accepts && fileName.trim() ? fileName.trim() : undefined,
+      file: mode.accepts && boardFile ? boardFile : undefined,
       brief: mode.accepts ? undefined : brief.trim(),
     });
     onClose();
@@ -150,7 +157,9 @@ export function StartDialog({
               type="file"
               accept={mode.accepts.join(',')}
               onChange={(e) => {
-                setFileName(e.target.files?.[0]?.name ?? '');
+                const picked = e.target.files?.[0] ?? null;
+                setBoardFile(picked);
+                setFileName(picked?.name ?? '');
                 setError(null);
               }}
               className={`${FIELD_CLASS} file:mr-3 file:border file:border-[var(--color-fg)] file:bg-[var(--color-bg)] file:px-3 file:py-1 file:text-xs file:font-medium file:text-[var(--color-fg)]`}
@@ -230,14 +239,14 @@ export function StartDialog({
         <div className="flex flex-col gap-3 sm:flex-row">
           <button
             type="submit"
-            className="btn-primary flex-1 px-5 py-3 text-sm font-medium"
+            className="btn-primary min-h-[44px] flex-1 px-5 py-3 text-sm font-medium"
           >
             {mode.cta}
           </button>
           <button
             type="button"
             onClick={onClose}
-            className="btn-secondary px-5 py-3 text-sm font-medium"
+            className="btn-secondary min-h-[44px] px-5 py-3 text-sm font-medium"
           >
             Cancel
           </button>
