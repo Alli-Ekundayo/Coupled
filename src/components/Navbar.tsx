@@ -1,31 +1,30 @@
 import { Menu, Moon, Sun, X } from 'lucide-react';
 import { useState } from 'react';
+import { Link, NavLink } from 'react-router-dom';
 import { PcbTheme } from '../three/pcbMaterials';
-
-export type NavModalAction = 'sign-in' | 'get-started';
+import { BrandLogo } from './BrandLogo';
 
 interface NavbarProps {
   theme: PcbTheme;
   onToggleTheme: () => void;
-  onOpenModal: (action: NavModalAction) => void;
+  onStart: () => void;
 }
 
-const SCROLL_LINKS: Array<{ label: string; href: string }> = [
-  { label: 'Product', href: '#product' },
-  { label: 'How it works', href: '#how-it-works' },
-  { label: 'Pricing', href: '#pricing' },
+const SCROLL_LINKS: Array<{ label: string; to: string }> = [
+  { label: 'Product', to: '/#product' },
+  { label: 'How it works', to: '/#how-it-works' },
 ];
 
-export function Navbar({ theme, onToggleTheme, onOpenModal }: NavbarProps) {
+export function Navbar({ theme, onToggleTheme, onStart }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const handleScrollLinkClick = () => {
+  const handleLinkClick = () => {
     setMobileMenuOpen(false);
   };
 
-  const handleModalClick = (action: NavModalAction) => {
+  const handleStartClick = () => {
     setMobileMenuOpen(false);
-    onOpenModal(action);
+    onStart();
   };
 
   const toggleLabel =
@@ -35,12 +34,14 @@ export function Navbar({ theme, onToggleTheme, onOpenModal }: NavbarProps) {
     <header className="relative z-20 w-full border-b border-[var(--color-fg)]">
       <div className="w-full px-3 sm:px-5 lg:px-6">
         <div className="flex w-full items-center justify-between gap-6 border-x border-[var(--color-fg)] px-5 py-4 md:px-10 lg:px-14">
-          <a
-            href="#top"
-            className="font-display nav-link shrink-0 whitespace-nowrap text-xl font-bold tracking-tight text-[var(--color-fg)]"
+          <NavLink
+            to="/"
+            end
+            className="font-display nav-link group inline-flex shrink-0 items-center gap-2.5 whitespace-nowrap text-xl font-bold tracking-tight text-[var(--color-fg)]"
           >
-            Coupled
-          </a>
+            <BrandLogo className="h-[1.125rem] w-auto shrink-0 transition-colors duration-200 group-hover:text-[var(--color-green)] motion-reduce:transition-none" />
+            <span>Coupled</span>
+          </NavLink>
 
           {/* Desktop & Tablet Navigation */}
           <nav
@@ -48,21 +49,24 @@ export function Navbar({ theme, onToggleTheme, onOpenModal }: NavbarProps) {
             className="hidden items-center gap-6 md:flex"
           >
             {SCROLL_LINKS.map((item) => (
-              <a
-                key={item.href}
-                href={item.href}
+              <Link
+                key={item.to}
+                to={item.to}
                 className="nav-link shrink-0 whitespace-nowrap px-1 py-1 text-[13px] font-medium text-[var(--color-fg)] underline-offset-4 hover:underline"
               >
                 {item.label}
-              </a>
+              </Link>
             ))}
-            <button
-              type="button"
-              onClick={() => handleModalClick('sign-in')}
-              className="nav-link shrink-0 whitespace-nowrap bg-transparent px-1 py-1 text-[13px] font-medium text-[var(--color-fg)] underline-offset-4 hover:underline"
+            <NavLink
+              to="/auth"
+              className={({ isActive }) =>
+                `nav-link shrink-0 whitespace-nowrap px-1 py-1 text-[13px] font-medium text-[var(--color-fg)] underline-offset-4 hover:underline ${
+                  isActive ? 'underline' : ''
+                }`
+              }
             >
               Sign in
-            </button>
+            </NavLink>
             <button
               type="button"
               onClick={onToggleTheme}
@@ -81,10 +85,10 @@ export function Navbar({ theme, onToggleTheme, onOpenModal }: NavbarProps) {
             </button>
             <button
               type="button"
-              onClick={() => handleModalClick('get-started')}
+              onClick={() => handleStartClick()}
               className="btn-primary shrink-0 whitespace-nowrap px-4 py-2 text-[13px] font-medium"
             >
-              Get started
+              Start building
             </button>
           </nav>
 
@@ -130,28 +134,32 @@ export function Navbar({ theme, onToggleTheme, onOpenModal }: NavbarProps) {
         >
           <div className="flex w-full flex-col gap-3 border-x border-[var(--color-fg)] px-5 py-5">
             {SCROLL_LINKS.map((item) => (
-              <a
-                key={item.href}
-                href={item.href}
-                onClick={handleScrollLinkClick}
+              <Link
+                key={item.to}
+                to={item.to}
+                onClick={handleLinkClick}
                 className="nav-link flex min-h-[44px] w-full items-center justify-between border-b border-[var(--color-fg)] py-2 text-left text-sm font-medium text-[var(--color-fg)]"
               >
                 <span>{item.label}</span>
-              </a>
+              </Link>
             ))}
-            <button
-              type="button"
-              onClick={() => handleModalClick('sign-in')}
-              className="nav-link flex min-h-[44px] w-full items-center justify-between border-b border-[var(--color-fg)] bg-transparent py-2 text-left text-sm font-medium text-[var(--color-fg)]"
+            <NavLink
+              to="/auth"
+              onClick={handleLinkClick}
+              className={({ isActive }) =>
+                `nav-link flex min-h-[44px] w-full items-center justify-between border-b border-[var(--color-fg)] py-2 text-left text-sm font-medium text-[var(--color-fg)] ${
+                  isActive ? 'underline underline-offset-4' : ''
+                }`
+              }
             >
               <span>Sign in</span>
-            </button>
+            </NavLink>
             <button
               type="button"
-              onClick={() => handleModalClick('get-started')}
+              onClick={() => handleStartClick()}
               className="btn-primary mt-2 flex min-h-[44px] w-full items-center justify-center px-5 py-2.5 text-sm font-medium"
             >
-              Get started
+              Start building
             </button>
           </div>
         </nav>

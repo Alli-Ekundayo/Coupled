@@ -1,6 +1,6 @@
 {
   "name": "Coupled",
-  "description": "Minimalist AI tool that automatically lays out circuit boards in minutes.",
+  "description": "AI-assisted PCB design for hobbyists and professionals: auto-placement and routing from existing designs, from-scratch help, or routing only.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

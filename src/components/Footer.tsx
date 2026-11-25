@@ -1,22 +1,25 @@
+import { Link } from 'react-router-dom';
+import { BrandLogo } from './BrandLogo';
+
 interface FooterProps {
-  onOpenSignIn: () => void;
-  onOpenUpload: () => void;
+  onStart: () => void;
 }
 
-export function Footer({ onOpenSignIn, onOpenUpload }: FooterProps) {
+export function Footer({ onStart }: FooterProps) {
   return (
     <footer className="relative z-20 w-full border-t border-[var(--color-fg)]">
       <div className="w-full px-3 sm:px-5 lg:px-6">
         <div className="grid w-full grid-cols-1 gap-10 border-x border-[var(--color-fg)] px-5 py-12 md:grid-cols-12 md:px-10 md:py-16 lg:px-14">
           <div className="md:col-span-5">
-            <a
-              href="#top"
-              className="font-display nav-link inline-block text-xl font-bold tracking-tight text-[var(--color-fg)]"
+            <Link
+              to="/#top"
+              className="font-display nav-link group inline-flex items-center gap-2.5 text-xl font-bold tracking-tight text-[var(--color-fg)]"
             >
-              Coupled
-            </a>
+              <BrandLogo className="h-[1.125rem] w-auto shrink-0 transition-colors duration-200 group-hover:text-[var(--color-green)] motion-reduce:transition-none" />
+              <span>Coupled</span>
+            </Link>
             <p className="mt-3 max-w-[34ch] text-[13px] leading-[1.7] text-[var(--color-fg)]">
-              Rule-compliant circuit board layout in minutes. Built for engineers who keep full control over every trace.
+              AI-assisted PCB placement and routing for hobbyists and professionals. Start from a design, from scratch, or just route.
             </p>
           </div>
 
@@ -27,54 +30,45 @@ export function Footer({ onOpenSignIn, onOpenUpload }: FooterProps) {
               </p>
               <ul className="mt-4 flex flex-col gap-2.5 text-[13px]">
                 <li>
-                  <a
-                    href="#product"
+                  <Link
+                    to="/#product"
                     className="nav-link underline-offset-4 hover:underline"
                   >
                     Overview
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="#how-it-works"
+                  <Link
+                    to="/#how-it-works"
                     className="nav-link underline-offset-4 hover:underline"
                   >
                     How it works
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#pricing"
-                    className="nav-link underline-offset-4 hover:underline"
-                  >
-                    Pricing
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
 
             <div>
               <p className="font-mono-label text-xs font-medium uppercase tracking-[0.14em] text-[var(--color-fg)]">
-                Workflow
+                Account
               </p>
               <ul className="mt-4 flex flex-col gap-2.5 text-[13px]">
                 <li>
                   <button
                     type="button"
-                    onClick={onOpenUpload}
+                    onClick={onStart}
                     className="nav-link bg-transparent text-left underline-offset-4 hover:underline"
                   >
-                    Upload a board
+                    Start building
                   </button>
                 </li>
                 <li>
-                  <button
-                    type="button"
-                    onClick={onOpenSignIn}
-                    className="nav-link bg-transparent text-left underline-offset-4 hover:underline"
+                  <Link
+                    to="/auth"
+                    className="nav-link underline-offset-4 hover:underline"
                   >
-                    Sign in
-                  </button>
+                    Sign in / Sign up
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -85,7 +79,7 @@ export function Footer({ onOpenSignIn, onOpenUpload }: FooterProps) {
               </p>
               <ul className="mt-4 flex flex-col gap-2.5 text-[13px]">
                 <li>KiCad (.kicad_pcb)</li>
-                <li>Gerber RS-274X</li>
+                <li>KiCad (.kicad_sch)</li>
                 <li>Netlist (.net)</li>
               </ul>
             </div>
@@ -97,7 +91,7 @@ export function Footer({ onOpenSignIn, onOpenUpload }: FooterProps) {
         <div className="flex w-full flex-col items-start justify-between gap-3 border-x border-[var(--color-fg)] px-5 py-5 text-xs sm:flex-row sm:items-center md:px-10 lg:px-14">
           <p>© 2026 Coupled. All rights reserved.</p>
           <p className="font-mono-label uppercase tracking-[0.14em]">
-            AI FOR PCB DESIGN
+            AI-ASSISTED PCB DESIGN
           </p>
         </div>
       </div>

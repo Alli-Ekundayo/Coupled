@@ -1,35 +1,35 @@
 interface HowItWorksSectionProps {
   onReplayAnimation: () => void;
-  onUploadBoard: () => void;
+  onStart: () => void;
 }
 
 const STEPS = [
   {
     number: '01',
-    title: 'Upload schematic or netlist',
+    title: 'Bring what you have',
     description:
-      'Drop in your KiCad project, board outline, and design rules. Coupled reads net classes, differential pairs, and mechanical keep-out zones automatically.',
-    detail: 'Supports .kicad_pcb, .kicad_sch, and .net',
+      'Drop in a KiCad design, or just describe what you want to build and let the AI help you shape the first draft. Hobby project or pro board, you choose the starting point.',
+    detail: 'KiCad files, or a plain-language brief',
   },
   {
     number: '02',
-    title: 'Constraint-first placement & routing',
+    title: 'Auto-place and route',
     description:
-      'Components settle into rule-compliant zones by signal integrity and thermal budget, then copper traces route cleanly with zero DRC violations.',
-    detail: 'Verified trace widths and clearances',
+      'Coupled places every footprint and routes the copper between them. Already placed your parts? Switch to route-only and your layout stays exactly as you left it.',
+    detail: 'Place + route, or route only',
   },
   {
     number: '03',
-    title: 'Review, adjust, and export',
+    title: 'Review, adjust, export',
     description:
-      'Lock critical footprints, nudge any trace directly, and export production-ready KiCad files or Gerber fabrication archives in a single click.',
-    detail: 'Native KiCad 8 round-trip and Gerber RS-274X',
+      'Explode the board into layers, zoom down to the pad, then lock a footprint, nudge a part, or export. You stay in control.',
+    detail: 'Inspect every layer and part',
   },
 ];
 
 export function HowItWorksSection({
   onReplayAnimation,
-  onUploadBoard,
+  onStart,
 }: HowItWorksSectionProps) {
   return (
     <section
@@ -47,7 +47,7 @@ export function HowItWorksSection({
               id="how-it-works-heading"
               className="font-display mt-4 max-w-[20ch] text-[clamp(1.75rem,3vw,2.75rem)] font-bold leading-[1.1] tracking-[-0.02em] text-[var(--color-fg)] [text-wrap:balance]"
             >
-              From netlist to fab-ready layout in three steps.
+              From idea to routed board in three steps.
             </h2>
           </div>
 
@@ -64,40 +64,17 @@ export function HowItWorksSection({
             </button>
             <button
               type="button"
-              onClick={onUploadBoard}
+              onClick={onStart}
               className="btn-primary shrink-0 whitespace-nowrap px-5 py-2.5 text-[13px] font-medium"
             >
-              Upload a board
+              Start building
             </button>
           </div>
         </div>
 
         <div className="mt-12 grid grid-cols-1 items-stretch gap-8 md:grid-cols-12 lg:gap-12">
-          {/* Open inspection stage where the 3D PCB glides on scroll with exploded layers */}
-          <div
-            aria-hidden="true"
-            className="hidden md:col-span-5 md:flex md:min-h-[480px] md:flex-col md:justify-between md:border md:border-[var(--color-fg)]/25 md:p-5"
-          >
-            <div className="flex items-center justify-between">
-              <span className="font-mono-label text-[11px] uppercase tracking-[0.14em] text-[var(--color-fg)]">
-                3D Stackup Inspection
-              </span>
-              <span className="font-mono-label text-[11px] uppercase tracking-[0.14em] text-[var(--color-fg)]">
-                2-Layer · FR4
-              </span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="font-mono-label text-[11px] text-[var(--color-fg)]">
-                X / Y / Z
-              </span>
-              <span className="font-mono-label text-[11px] text-[var(--color-fg)]">
-                0 DRC
-              </span>
-            </div>
-          </div>
-
-          {/* Right column: 01 - 03 editorial steps */}
-          <ol className="relative z-20 flex flex-col divide-y divide-[var(--color-fg)] border border-[var(--color-fg)] md:col-span-7">
+          {/* 01 - 03 editorial steps */}
+          <ol className="relative z-20 flex flex-col divide-y divide-[var(--color-fg)] border border-[var(--color-fg)] md:col-span-12">
             {STEPS.map((step) => (
               <li
                 key={step.number}

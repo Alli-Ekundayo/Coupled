@@ -1,0 +1,34 @@
+import { SVGProps } from 'react';
+
+export const BRAND_LOGO_VIEWBOX = '0 0 365.73 158.14';
+
+export const BRAND_LOGO_PATH =
+  'M197.22 38.42 C196.76 38.50 196.33 38.03 195.86 38.05 C194.23 38.12 192.41 39.06 190.79 39.37 C186.45 40.19 181.71 40.26 177.34 39.65 C157.32 36.84 139.09 19.43 121.51 10.06 C108.29 3.02 93.95 -0.17 79.00 0.70 C69.75 1.24 60.73 3.49 52.14 6.93 C14.24 22.10 -8.37 59.98 2.90 100.41 C5.19 108.60 8.85 116.33 13.71 123.31 C19.29 131.31 26.34 138.23 34.45 143.66 C54.67 157.18 82.92 161.29 106.45 155.75 C115.39 153.64 124.04 150.03 132.02 145.49 C148.46 136.12 167.07 117.78 186.21 116.44 C217.51 114.25 235.27 143.76 262.00 153.76 C273.64 158.11 286.67 159.04 298.91 157.10 C340.23 150.53 368.91 113.64 365.45 72.01 C364.23 57.33 359.38 42.95 350.45 31.09 C335.37 11.06 308.20 -1.91 283.04 0.23 C274.59 0.95 266.30 3.44 258.70 7.16 C240.27 16.22 225.49 31.41 212.33 46.85 C201.79 59.21 192.25 72.37 182.08 85.03 C173.94 95.18 165.51 105.04 156.56 114.49 C138.70 133.34 115.70 152.61 88.12 150.90 C57.11 148.98 37.11 123.93 30.38 95.40 C28.14 85.88 27.59 76.12 28.02 66.37 C29.12 41.16 41.06 18.48 66.10 10.04 C96.28 -0.13 121.84 15.76 140.70 38.44 C146.93 45.93 151.89 54.43 158.23 61.81 C160.53 64.48 163.83 68.58 167.74 68.50 C171.83 68.41 175.24 63.80 177.70 61.06 C182.21 56.05 186.66 50.98 191.16 45.94 C192.94 43.94 195.11 41.97 196.61 39.75 C196.88 39.34 196.94 38.82 197.22 38.42 Z';
+
+interface BrandLogoProps extends Omit<SVGProps<SVGSVGElement>, 'viewBox'> {
+  /** Provide an accessible label when the mark is rendered without adjacent "Coupled" text. */
+  label?: string;
+}
+
+/**
+ * Vector Coupled brand mark. Uses `currentColor` so it adapts automatically
+ * to dark mode (`--color-cream`), light mode (`--color-black`), and hover states.
+ */
+export function BrandLogo({ label, className = 'h-5 w-auto', ...rest }: BrandLogoProps) {
+  const a11yProps = label
+    ? { role: 'img' as const, 'aria-label': label }
+    : { 'aria-hidden': true as const, focusable: false };
+
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox={BRAND_LOGO_VIEWBOX}
+      fill="none"
+      className={className}
+      {...a11yProps}
+      {...rest}
+    >
+      <path d={BRAND_LOGO_PATH} fill="currentColor" />
+    </svg>
+  );
+}
